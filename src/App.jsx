@@ -4,6 +4,7 @@ import Signup from "./components/Signup";
 import Landing from "./components/Landing";
 import Login from "./components/Login";
 import Admin from "./components/admin_dashboard";
+import AddCourseForm from "./components/addCourse";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import {
@@ -24,6 +25,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin_dashboard" element={<Admin/>}/>
+          <Route path="/addcourse" element={<AddCourseForm/>}/>
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

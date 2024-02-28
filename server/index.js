@@ -114,6 +114,19 @@ app.post("/admin/signup", async (req, res) => {
   });
 });
 
+app.get("/user/courses", async (req, res) => {
+  try {
+    // Fetch all courses from the database
+    const courses = await Course.find();
+
+    // Send the courses as a response
+    res.json(courses);
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 app.get("/admin/courses", authenticatejwt, async (req, res) => {
   const { emailId, password } = req.user;
   try {

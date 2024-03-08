@@ -8,12 +8,9 @@ const Landing = () => {
 
   const landingStyles = {
     height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    maxWidth:"100wh",
     textAlign: "center",
-    background: "linear-gradient(to bottom, #E1E8F5, #FFFCF7)"
+    // background: "linear-gradient(to bottom, #E1E8F5, #FFFCF7)"
   };
 
   return (

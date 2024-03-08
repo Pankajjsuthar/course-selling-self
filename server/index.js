@@ -122,9 +122,13 @@ app.get("/user/courses", async (req, res) => {
     // Send the courses as a response
     res.json(courses);
   } catch (error) {
-    console.error('Error fetching courses:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error fetching courses:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
+});
+
+app.get("/user/me", authenticatejwt, async (req, res) => {
+  await res.json({ email: req.user.emailId });
 });
 
 app.get("/admin/courses", authenticatejwt, async (req, res) => {
@@ -150,34 +154,78 @@ app.post("/admin/newCourse", authenticatejwt, async (req, res) => {
   const { emailId } = req.user;
 
   try {
-      // Check if the course name already exists
-      const existingCourse = await Course.findOne({ courseName });
+    // Check if the course name already exists
+    const existingCourse = await Course.findOne({ courseName });
 
-      if (existingCourse) {
-          return res.status(403).json({ message: "Course name is already taken. CHANGE NAME OF YOUR COURSE!" });
+    if (existingCourse) {
+      return res.status(403).json({
+        message: "Course name is already taken. CHANGE NAME OF YOUR COURSE!",
+      });
+    }
+
+    // Create a new course
+    const newCourse = new Course({
+      courseName,
+      description,
+      price,
+      duration,
+      imageLink,
+    });
+
+    // Save the new course
+    await newCourse.save();
+
+    // Find the admin and push the new course to admin's courses
+    const admin = await Admin.findOne({ emailId });
+    admin.courses.push(newCourse);
+    await admin.save();
+
+    return res.status(200).json({ message: "Course created successfully." });
+  } catch (error) {
+    console.error("Error creating new course:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.put("/admin/courses/:id",authenticatejwt,async (req, res) => {
+    const courseId = req.params.id;
+    const updatedCourseDetails = req.body;
+    try {
+      Courses.findByIdAndUpdate(courseId, updatedCourseDetails, { new: true });
+      if (!updatedCourse) {
+        return res.status(404).json({ message: "Course not found" });
       }
 
-      // Create a new course
-      const newCourse = new Course({
-          courseName,
-          description,
-          price,
-          duration,
-          imageLink
+      // Course updated successfully
+      res.status(200).json({
+        message: "Course updated successfully",
+        course: updatedCourse,
       });
+    } catch (error) {
+      console.error("Error updating course:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+);
 
-      // Save the new course
-      await newCourse.save();
+app.delete("/admin/courses/:id", authenticatejwt, async(req,res) => {
+  const courseId = req.params.id; // Extract the course ID from the request params
+  console.log(courseId);
+  try {
+    // Find the course by its ID and delete it from the database
+    // const deletedCourse = await Courses.findOneAndRemove({_id : courseId});
+    const deletedCourse = await Course.findOneAndDelete({ _id : courseId });
+    console.log(deletedCourse);
 
-      // Find the admin and push the new course to admin's courses
-      const admin = await Admin.findOne({ emailId });
-      admin.courses.push(newCourse);
-      await admin.save();
+    if (!deletedCourse) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
 
-      return res.status(200).json({ message: "Course created successfully." });
+    // Course deleted successfully
+    res.status(200).json({ message: 'Course deleted successfully' });
   } catch (error) {
-      console.error("Error creating new course:", error);
-      return res.status(500).json({ message: "Internal server error" });
+    console.error('Error deleting course:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 

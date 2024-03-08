@@ -61,17 +61,12 @@ const Login = () => {
   const navigate = useNavigate();
 
   const landingStyles = {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "linear-gradient(to bottom, #E1E8F5, #FFFCF7)",
+    
   };
   return (
     <div style={landingStyles}>
-      <Container maxWidth="sm" style={{ marginTop: "50px" }}>
-        <Card>
+      <Container maxWidth="sm" style={{ marginTop: "100px"}}>
+        <Card  style={{backgroundColor : "#FFFFF9"}}>
           <CardContent>
             <Typography
               variant="h5"

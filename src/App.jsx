@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Admin from "./components/admin_dashboard";
 import AddCourseForm from "./components/addCourse";
 import User_landing from "./components/user_landing_page";
+import UpdateCourseForm from "./components/updateCourse";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import {
@@ -29,6 +30,8 @@ function App() {
           <Route path="/admin_dashboard" element={<Admin/>}/>
           <Route path="/addcourse" element={<AddCourseForm/>}/>
           <Route path="/user_courses" element={<User_landing/>}/>
+          <Route path="/admin_updateCourse" element={<UpdateCourseForm/>}/>
+          
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

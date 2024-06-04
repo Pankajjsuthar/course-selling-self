@@ -12,7 +12,6 @@ app.use(cors());
 app.use(express.json());
 
 const { Admin } = require("./models/Admin.jsx");
-const { Courses } = require("./models/Course.jsx");
 const { User } = require("./models/User.jsx");
 const { secretKey } = require("./middleware/auth.js");
 const Course = require("./models/Course.jsx");
@@ -150,7 +149,6 @@ app.get("/admin/courses", authenticatejwt, async (req, res) => {
 
 app.post("/admin/newCourse", authenticatejwt, async (req, res) => {
   const { courseName, description, price, duration, imageLink } = req.body;
-  console.log(req.body);
   const { emailId } = req.user;
 
   try {
@@ -187,35 +185,38 @@ app.post("/admin/newCourse", authenticatejwt, async (req, res) => {
   }
 });
 
-app.put("/admin/courses/:id",authenticatejwt,async (req, res) => {
-    const courseId = req.params.id;
-    const updatedCourseDetails = req.body;
-    try {
-      Courses.findByIdAndUpdate(courseId, updatedCourseDetails, { new: true });
-      if (!updatedCourse) {
-        return res.status(404).json({ message: "Course not found" });
-      }
+app.put("/admin/courses/:id", authenticatejwt, async (req, res) => {
+  const courseId = req.params.id;
+  const updatedCourseDetails = req.body;
 
-      // Course updated successfully
-      res.status(200).json({
-        message: "Course updated successfully",
-        course: updatedCourse,
-      });
-    } catch (error) {
-      console.error("Error updating course:", error);
-      res.status(500).json({ message: "Internal server error" });
+  try {
+    const updatedCourse = await Course.findOneAndUpdate(
+      { _id: courseId }, // Specify the filter to find the document
+      updatedCourseDetails, // The new values to update
+      { new: true } // This option returns the updated document
+    );
+
+    if (!updatedCourse) {
+      return res.status(404).json({ message: "Course not found" });
     }
+
+    // Course updated successfully
+    res.status(200).json({
+      message: "Course updated successfully",
+      course: updatedCourse,
+    });
+  } catch (error) {
+    console.error("Error updating course:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
-);
+});
 
 app.delete("/admin/courses/:id", authenticatejwt, async(req,res) => {
   const courseId = req.params.id; // Extract the course ID from the request params
-  console.log(courseId);
   try {
     // Find the course by its ID and delete it from the database
     // const deletedCourse = await Courses.findOneAndRemove({_id : courseId});
     const deletedCourse = await Course.findOneAndDelete({ _id : courseId });
-    console.log(deletedCourse);
 
     if (!deletedCourse) {
       return res.status(404).json({ message: 'Course not found' });

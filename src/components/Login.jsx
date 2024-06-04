@@ -13,6 +13,10 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import { isUserLoading } from "../store/selectors/isUserLoading";
+import { userState } from "../store/atoms/user";
+import { userEmailState } from "../store/selectors/userEmail";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +24,8 @@ const Login = () => {
     password: "",
     isAdmin: false,
   });
+
+  const [user,setUser] = useRecoilState(userState);
 
   const handleChange = (e) => {
     setFormData({
@@ -42,9 +48,14 @@ const Login = () => {
         "http://localhost:3000/user/login",
         formData
       );
+      console.log(formData);
       if (response.status === 200) {
         console.log("Login successful.");
         sessionStorage.setItem("jwtToken", response.data.token);
+        setUser({
+          isLoading : false,
+          userEmail : formData.emailId
+        })
         if (formData.isAdmin) {
           navigate("/admin");
         } else {

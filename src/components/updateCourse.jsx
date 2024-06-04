@@ -4,23 +4,28 @@ import {
   TextField,
   Button,
   Grid,
-  Box,
   Container,
   Card,
   CardContent,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CourseCard from "./course_card_admin";
 
-const UpdateCourseForm = () => {
+const UpdateCourseDialog = ({ course }) => {
+  const [open, setOpen] = useState(false);
   const [courseDetails, setCourseDetails] = useState({
-    // Initialize state for course details
-    // Example: title, description, etc.
+    // Initialize state for course details with the provided course data
+    courseName: course.courseName,
+    description: course.description,
+    price: course.price,
+    duration: course.duration,
+    imageLink: course.imageLink,
   });
-
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     setCourseDetails({ ...courseDetails, [e.target.name]: e.target.value });
   };
@@ -30,7 +35,7 @@ const UpdateCourseForm = () => {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       const response = await axios.put(
-        "http://localhost:3000/admin/courses/:id",
+        `http://localhost:3000/admin/courses/${course._id}`, // Replace with the actual endpoint and course ID
         courseDetails,
         {
           headers: {
@@ -39,124 +44,101 @@ const UpdateCourseForm = () => {
         }
       );
       if (response.status === 200) {
-        console.log("Course added successfully.");
-        navigate("/admin");
+        console.log("Course updated successfully.");
+        handleClose();
       } else {
-        console.log("Error while adding course");
+        console.log("Error while updating course");
       }
     } catch (error) {
       console.error("Error:", error.message);
     }
   };
 
-
-  const landingStyles = {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "linear-gradient(to bottom, #E1E8F5, #FFFCF7)",
+  const handleOpen = () => {
+    setOpen(true);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <div style={landingStyles}>
-      <Container>
-        <Card>
-          <CardContent>
-            <Typography
-              variant="h5"
-              align="center"
-              gutterBottom
-              style={{
-                marginBottom: "20px",
-                fontWeight: "bold",
-              }}
-            >
-              Add Course
-            </Typography>
-            <form>
-              <Grid container spacing={{ xs: 1, md: 2 }}>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Course Title"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    name="courseName"
-                    value={courseDetails.courseName}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12} row={12}>
-                  <TextField
-                    label="Course Description"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    name="description"
-                    value={courseDetails.description}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Price of the course"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    name="price"
-                    value={courseDetails.price}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Duration of the course"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    name="duration"
-                    value={courseDetails.duration}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Image Link"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    name="imageLink"
-                    value={courseDetails.imageLink}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={3}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={updateCourse}
-                  >
-                    Update
-                  </Button>
-                </Grid>
+    <React.Fragment>
+      <Button variant="text" size="small" onClick={handleOpen}>
+        Update Course
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Update Course</DialogTitle>
+        <DialogContent>
+          <form>
+            <Grid container spacing={{ xs: 1, md: 2 }}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Course Title"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  name="courseName"
+                  value={courseDetails.courseName}
+                  onChange={handleChange}
+                />
               </Grid>
-            </form>
-          </CardContent>
-        </Card>
-{/* 
-        <CourseCard 
-            imageLink={course.imageLink}
-            courseName={course.courseName}
-            description={course.description}
-            price={course.price}
-            duration={course.duration}
-        /> */}
-      </Container>
-    </div>
+              <Grid item xs={12} row={12}>
+                <TextField
+                  label="Course Description"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  name="description"
+                  value={courseDetails.description}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Price of the course"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  name="price"
+                  value={courseDetails.price}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Duration of the course"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  name="duration"
+                  value={courseDetails.duration}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Image Link"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  name="imageLink"
+                  value={courseDetails.imageLink}
+                  onChange={handleChange}
+                />
+              </Grid>
+            </Grid>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={updateCourse} variant="contained" color="primary">
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
   );
 };
 
-export default UpdateCourseForm;
+export default UpdateCourseDialog;

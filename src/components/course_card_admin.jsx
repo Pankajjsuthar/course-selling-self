@@ -1,18 +1,8 @@
 import React from "react";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import UpdateCourseDialog from "./updateCourse";
 
 const Course_card_admin = (props) => {
-  const navigate = useNavigate();
-
   const handleDelete = async (e) => {
     e.preventDefault();
     const jwtToken = sessionStorage.getItem("jwtToken");
@@ -41,34 +31,36 @@ const Course_card_admin = (props) => {
     }
   };
 
-  return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia sx={{ height: 140 }} image={props.imageLink} />
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          {props.courseName}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {props.description}
-        </Typography>
-      </CardContent>
+  const courseData = {
+    _id: props.courseId,
+    courseName: props.courseName,
+    description: props.description,
+    price: props.price,
+    duration: props.duration,
+    imageLink: props.imageLink,
+  };
 
-      <CardActions>
-        <Button
-          size="small"
-          variant="text"
-          onClick={() => navigate("/admin_updateCourse")}
-        >
-          Update
-        </Button>
-        <Button 
-          size="small" 
-          variant="text" 
-          onClick={handleDelete}>
-          Delete
-        </Button>
-      </CardActions>
-    </Card>
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+      <img
+        src={props.imageLink}
+        alt={props.courseName}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h3 className="text-lg font-semibold mb-2">{props.courseName}</h3>
+        <p className="text-gray-700 mb-4">{props.description}</p>
+        <div className="flex justify-between items-center">
+          <UpdateCourseDialog course={courseData} />
+          <button
+            className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors duration-300"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

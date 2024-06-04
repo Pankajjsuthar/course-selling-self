@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Box, Icon } from "@mui/material";
-import { AccountCircle, ExitToApp } from "@mui/icons-material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import {
+  Typography,
+  Button,
+  Box,
+  CircularProgress,
+  IconButton,
+  MenuItem,
+} from "@mui/material";
+import { AccountCircle, ExitToApp, Menu } from "@mui/icons-material";
 import PersonIcon from "@mui/icons-material/Person";
-import { IconButton } from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import { isUserLoading } from "../store/selectors/isUserLoading";
+import { userState } from "../store/atoms/user";
+import { userEmailState } from "../store/selectors/userEmail";
 import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState(null);
+  // const [userEmail, setUserEmail] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -21,36 +29,35 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  const userLoading = useRecoilValue(isUserLoading);
+  const userEmail = useRecoilValue(userEmailState);
+  console.log(userEmail);
+  const setUser = useSetRecoilState(userState);
+
   const navbarstyle = {
     width: "100%",
     display: "flex",
-    "justify-content": "center",
+    justifyContent: "center",
     backgroundColor: "#FFFFF9",
   };
 
   // Function to handle user login/logout
   const logOut = () => {
     sessionStorage.setItem("jwtToken", null);
-    setUserEmail(null);
+    setUser({
+      isLoading: false,
+      userEmail: null,
+    });
     navigate("/login");
   };
 
-  useEffect(() => {
-    const init = async () => {
-      const jwtToken = sessionStorage.getItem("jwtToken");
-      const response = await axios.get("http://localhost:3000/user/me", {
-        headers: {
-          authorization: `Bearer ${jwtToken}`,
-        },
-      });
-      console.log(response.data.email);
-      if (response.data.email) {
-        setUserEmail(response.data.email);
-      }
-    };
-
-    init();
-  }, [userEmail]);
+  if (userLoading) {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   if (userEmail) {
     return (

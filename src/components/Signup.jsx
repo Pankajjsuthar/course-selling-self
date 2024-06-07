@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from 'axios';
-
+import axios from "axios";
+import signupimg from "../images/signup.jpg"
 
 import {
   Button,
@@ -41,179 +41,149 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(formData.confirmPassword !== formData.password){
-        alert("passwords didn't match.");
-    }
-    else{
-        {
-            try {
-                var response;
-                if(formData.isAdmin === true){
-                    response = await axios.post(
-                        "http://localhost:3000/admin/signup",
-                        formData
-                      );
-                }
-                else{
-                    response = await axios.post(
-                        "http://localhost:3000/user/signup",
-                        formData
-                      );
-                }
-                if (response.status === 200) {
-                  console.log("Signup successful.");
-                  navigate("/login");
-                } else {
-                  console.log("Error");
-                }
-              } catch (error) {
-                console.error("Error while signing up:", error.message);
-              }
+    if (formData.confirmPassword !== formData.password) {
+      alert("passwords didn't match.");
+    } else {
+      {
+        try {
+          var response;
+          if (formData.isAdmin === true) {
+            response = await axios.post(
+              "http://localhost:3000/admin/signup",
+              formData
+            );
+          } else {
+            response = await axios.post(
+              "http://localhost:3000/user/signup",
+              formData
+            );
+          }
+          if (response.status === 200) {
+            console.log("Signup successful.");
+            navigate("/login");
+          } else {
+            console.log("Error");
+          }
+        } catch (error) {
+          console.error("Error while signing up:", error.message);
         }
+      }
     }
-    
   };
   const navigate = useNavigate();
 
-  const landingStyles = {
-    
-  };
-
   return (
-    <div
-    style={landingStyles}>
-
-    <Container maxWidth="sm" style={{ marginTop: "50px" }}>
-      <Card style={{backgroundColor : "#FFFFF9"}}>
-        <CardContent>
-          <Typography
-            variant="h5"
-            align="center"
-            gutterBottom
-            style={{
-              marginBottom: "20px",
-              fontWeight: "bold",
+    <div className="relative w-full h-screen flex items-center justify-center bg-gray-500">
+      <img
+        src={signupimg}
+        alt="landing"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="w-full z-10 max-w-sm bg-[#FFFFF9] rounded-lg shadow-lg p-6">
+        <h5 className="text-center text-xl font-bold mb-6">Sign Up</h5>
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <input
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                required
+                value={formData.firstName}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                required
+                value={formData.lastName}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+          <div className="mb-4">
+            <input
+              type="email"
+              name="emailId"
+              placeholder="Email"
+              required
+              value={formData.emailId}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="tel"
+              name="phoneNo"
+              placeholder="Phone Number"
+              required
+              value={formData.phoneNo}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              required
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={formData.isAdmin}
+                onChange={handleCheckboxChange}
+                className="form-checkbox h-5 w-5 text-blue-600"
+              />
+              <span className="ml-2 text-gray-700">Are you an admin?</span>
+            </label>
+          </div>
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="w-full px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Sign Up
+            </button>
+          </div>
+        </form>
+        <p className="text-center text-sm text-gray-700 mt-4">
+          Already have an account?{" "}
+          <button
+            className="text-blue-600 hover:underline"
+            onClick={() => {
+              navigate("/login");
             }}
           >
-            Sign Up
-          </Typography>
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="First Name"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Last Name"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Email"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  type="email"
-                  name="emailId"
-                  value={formData.emailId}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Phone Number"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  type="tel"
-                  name="phoneNo"
-                  value={formData.phoneNo}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Password"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Confirm Password"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                {/* Checkbox for admin status */}
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={formData.isAdmin}
-                      onChange={handleCheckboxChange}
-                    />
-                  }
-                  label="Are you an admin?"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                >
-                  Sign Up
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-          <Typography
-            variant="body2"
-            align="center"
-            style={{ marginTop: "20px" }}
-          >
-            Already have an account?{" "}
-            <Button
-              variant="text"
-              color="secondary"
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              Log In
-            </Button>
-          </Typography>
-        </CardContent>
-      </Card>
-    </Container>
+            Log In
+          </button>
+        </p>
+      </div>
     </div>
   );
 };

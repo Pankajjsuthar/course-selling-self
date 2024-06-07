@@ -1,25 +1,12 @@
-import React, { useState, useEffect } from "react";
-import {
-  Typography,
-  Button,
-  Box,
-  CircularProgress,
-  IconButton,
-  MenuItem,
-} from "@mui/material";
-import { AccountCircle, ExitToApp, Menu } from "@mui/icons-material";
-import PersonIcon from "@mui/icons-material/Person";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isUserLoading } from "../store/selectors/isUserLoading";
 import { userState } from "../store/atoms/user";
 import { userEmailState } from "../store/selectors/userEmail";
-import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  // const [userEmail, setUserEmail] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -31,15 +18,7 @@ const Navbar = () => {
 
   const userLoading = useRecoilValue(isUserLoading);
   const userEmail = useRecoilValue(userEmailState);
-  console.log(userEmail);
   const setUser = useSetRecoilState(userState);
-
-  const navbarstyle = {
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "#FFFFF9",
-  };
 
   // Function to handle user login/logout
   const logOut = () => {
@@ -53,106 +32,90 @@ const Navbar = () => {
 
   if (userLoading) {
     return (
-      <Box sx={{ display: "flex" }}>
-        <CircularProgress />
-      </Box>
+      <div className="flex justify-center items-center">
+        <div className="loader"></div>
+      </div>
     );
   }
 
   if (userEmail) {
     return (
-      <div style={navbarstyle}>
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "15px 10px",
-            width: "90vw",
-          }}
-        >
-          <Box style={{ display: "flex", alignItems: "center" }}>
-            <Typography variant="h4" sx={{ marginRight: "10px" }}>
-              Coursite
-            </Typography>
-            <Typography variant="h6">Sell and Buy Courses </Typography>
-          </Box>
-          <Box style={{ display: "flex", gap: 2, marginRight: "30px" }}>
-            <IconButton>
-              <ShoppingCartIcon fontSize="large" />
-            </IconButton>
-            <IconButton
-              aria-controls={open ? "demo-positioned-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-            >
-              <PersonIcon fontSize="large" />
-            </IconButton>
-            <Menu
-              id="demo-positioned-menu"
-              aria-labelledby="demo-positioned-button"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
+      <div className="w-full flex justify-center opacity-70">
+        <div className="flex justify-between items-center py-4 px-5 w-11/12">
+          <div className="flex items-center">
+            <h1 className="text-2xl font-bold mr-2">Coursite</h1>
+            <p className="text-lg">Sell and Buy Courses</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <button
+              className="text-xl"
+              onClick={() => {
+                navigate("/cart");
               }}
             >
-              <MenuItem onClick={handleClose}>Dashboard</MenuItem>
-              <MenuItem onClick={logOut}>Logout</MenuItem>
-            </Menu>
-          </Box>
-        </Box>
+              🛒
+            </button>
+            <div className="relative">
+              <button
+                className="text-xl"
+                aria-controls={open ? "user-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                👤
+              </button>
+              {open && (
+                <div
+                  id="user-menu"
+                  className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20"
+                >
+                  <button
+                    onClick={handleClose}
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                  >
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={logOut}
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     );
   } else {
     return (
-      <div style={navbarstyle}>
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "15px 10px",
-            width: "90vw",
-          }}
-        >
-          <Box style={{ display: "flex", alignItems: "center" }}>
-            <Typography variant="h4" sx={{ marginRight: "10px" }}>
-              Coursite
-            </Typography>
-            <Typography variant="h6">Sell and Buy Courses </Typography>
-          </Box>
-          <Box style={{ display: "flex", gap: 2, marginRight: "30px" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AccountCircle />}
-              sx={{ marginRight: "10px" }}
+      <div className="w-full flex justify-center opacity-70">
+        <div className="flex justify-between items-center py-4 px-5 w-11/12">
+          <div className="flex items-center">
+            <h1 className="text-2xl font-bold mr-2">Coursite</h1>
+            <p className="text-lg">Sell and Buy Courses</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
               onClick={() => {
                 navigate("/signup");
               }}
             >
               Sign Up
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<ExitToApp />}
+            </button>
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-md"
               onClick={() => {
                 navigate("/login");
               }}
             >
               Log In
-            </Button>
-          </Box>
-        </Box>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

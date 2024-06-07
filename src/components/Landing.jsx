@@ -6,25 +6,25 @@ import landing_image from "../images/landing_page.jpg";
 const Landing = () => {
   const navigate = useNavigate();
 
-  const landingStyles = {
-    height: "100vh",
-    maxWidth:"100wh",
-    textAlign: "center",
-    // background: "linear-gradient(to bottom, #E1E8F5, #FFFCF7)"
-  };
-
   return (
-    <div style={landingStyles}>
-      <img src={landing_image} alt="landing" style={{ maxWidth: "40%" }} />
-      <Typography variant="h1">Learn, Earn, Save and Serve.</Typography>
-      <Button
-        variant="outlined"
-        onClick={() => {
-          navigate("/signup");
-        }}
-      >
-        Sign Up for Free!
-      </Button>
+    <div className="relative w-full h-screen flex items-center justify-center bg-gray-500">
+      <img
+        src={landing_image}
+        alt="landing"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="relative z-10 flex h-[200px] items-start max-w-screen-lg  px-4 py-16 sm:px-6 lg:px-8 w-full">
+        <div className="flex justify-center items-center h-full">
+          <h1 className="text-6xl font-extrabold text-gray-900 mr-4">
+            COURSITE
+          </h1>
+        </div>
+        <div className="h-full w-full flex  items-center">
+          <h2 className="text-4xl font-semibold flex justify-center text-gray-700 ml-5">
+            Your journey starts here.
+          </h2>
+        </div>
+      </div>
     </div>
   );
 };

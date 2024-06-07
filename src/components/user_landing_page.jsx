@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-  Grid,
-} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import userlandingimage from "../images/user_dashboard.jpg";
 
 const TruncatedDescription = ({ description }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -22,22 +14,25 @@ const TruncatedDescription = ({ description }) => {
 
   return (
     <div>
-      <Typography variant="body2" color="text.secondary">
+      <p className="text-black">
         {truncatedWords.join(" ")}
         {!isExpanded && words.length > 10 && " ..."}
-      </Typography>
+      </p>
       {words.length > 10 && (
-        <Button size="small" onClick={handleReadMore}>
+        <button
+          className="text-blue-500 hover:underline mt-2"
+          onClick={handleReadMore}
+        >
           {isExpanded ? "Read Less" : "Read More"}
-        </Button>
+        </button>
       )}
     </div>
   );
 };
 
-const Course_card_user = (props) => {
+const CourseCardUser = (props) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+    <div className="bg-[#fffefe] rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
       <img
         src={props.imageLink}
         alt={props.courseName}
@@ -45,31 +40,33 @@ const Course_card_user = (props) => {
       />
       <div className="p-4">
         <div className="flex justify-between items-center mb-2">
-          <h3 className="text-lg font-semibold">{props.courseName}</h3>
-          <span className="text-gray-600">{props.duration}</span>
+          <h3 className="text-lg font-semibold text-black">
+            {props.courseName}
+          </h3>
+          <span className="text-black">{props.duration}</span>
         </div>
         <TruncatedDescription description={props.description} />
         <hr className="my-4" />
         <div className="flex justify-between items-center">
           <div className="flex space-x-2">
             <button
-              className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-300"
+              className="px-4 py-2 rounded-md bg-[#F1D4E5] text-black hover:bg-[#FFF4E0] transition-colors duration-300"
               onClick={props.onClick}
             >
               Add To Cart
             </button>
-            <button className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-300">
+            <button className="px-4 py-2 rounded-md bg-[#F1D4E5] text-black hover:bg-[#FFF4E0] transition-colors duration-300">
               Buy Now
             </button>
           </div>
-          <span className="text-gray-800 font-bold">${props.price}</span>
+          <span className="text-black font-bold">${props.price}</span>
         </div>
       </div>
     </div>
   );
 };
 
-const User_landing = () => {
+const UserLanding = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
@@ -87,26 +84,35 @@ const User_landing = () => {
   }, []);
 
   return (
-    <div>
-    <Typography variant="h4" align="center" gutterBottom>
-      Available Courses
-    </Typography>
-    <div className="flex flex-wrap justify-center mx-4">
-      {courses.map((course, index) => (
-        <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-4 mb-8">
-          <Course_card_user
-            imageLink={course.imageLink}
-            courseName={course.courseName}
-            description={course.description}
-            price={course.price}
-            duration={course.duration}
-            onClick={() => navigate(`/course/${course.id}`)}
-          />
-        </div>
-      ))}
+    <div className="container mx-auto p-4 flex flex-col">
+      <div className="h-[90vh]">
+        <img
+          src={userlandingimage}
+          alt="landing"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <hr className="mb-8" />
+      <hr className="mb-8" />
+      <div className="flex flex-wrap mx-4">
+        {courses.map((course, index) => (
+          <div
+            key={index}
+            className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-4 mb-8"
+          >
+            <CourseCardUser
+              imageLink={course.imageLink}
+              courseName={course.courseName}
+              description={course.description}
+              price={course.price}
+              duration={course.duration}
+              onClick={() => navigate(`/course/${course.id}`)}
+            />
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
   );
 };
 
-export default User_landing;
+export default UserLanding;

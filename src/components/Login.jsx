@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import signupimg from "../images/signup.jpg"
 import {
   Button,
   Typography,
@@ -71,95 +72,73 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const landingStyles = {
-    
-  };
+  
   return (
-    <div style={landingStyles}>
-      <Container maxWidth="sm" style={{ marginTop: "100px"}}>
-        <Card  style={{backgroundColor : "#FFFFF9"}}>
-          <CardContent>
-            <Typography
-              variant="h5"
-              align="center"
-              gutterBottom
-              style={{
-                marginBottom: "20px",
-                fontWeight: "bold",
-              }}
-            >
-              Log In
-            </Typography>
-            <form>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    name="emailId"
-                    value={formData.emailId}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Password"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  {/* Checkbox for admin status */}
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={formData.isAdmin}
-                        onChange={handleCheckboxChange}
-                      />
-                    }
-                    label="Are you an admin?"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={handleSubmit}
-                  >
-                    Log In
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-            <Typography
-              variant="body2"
-              align="center"
-              style={{ marginTop: "20px" }}
-            >
-              Don't have an account?{" "}
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={() => {
-                  navigate("/signup");
-                }}
-              >
-                Sign Up
-              </Button>
-            </Typography>
-          </CardContent>
-        </Card>
-      </Container>
-    </div>
+    <div className="relative w-full h-screen flex items-center justify-center bg-gray-500">
+      <img
+        src={signupimg}
+        alt="landing"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+  <div className="w-full z-10 max-w-sm bg-[#FFFFF9] rounded-lg shadow-lg p-6">
+    <h5 className="text-center text-xl font-bold mb-6">Log In</h5>
+    <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <input
+          type="email"
+          name="emailId"
+          placeholder="Email"
+          required
+          value={formData.emailId}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+          value={formData.password}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            checked={formData.isAdmin}
+            onChange={handleCheckboxChange}
+            className="form-checkbox h-5 w-5 text-blue-600"
+          />
+          <span className="ml-2 text-gray-700">Are you an admin?</span>
+        </label>
+      </div>
+      <div className="mb-4">
+        <button
+          type="submit"
+          className="w-full px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Log In
+        </button>
+      </div>
+    </form>
+    <p className="text-center text-sm text-gray-700 mt-4">
+      Don't have an account?{" "}
+      <button
+        className="text-blue-600 hover:underline"
+        onClick={() => {
+          navigate("/signup");
+        }}
+      >
+        Sign Up
+      </button>
+    </p>
+  </div>
+</div>
+
   );
 };
 

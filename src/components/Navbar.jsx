@@ -40,11 +40,11 @@ const Navbar = () => {
 
   if (userEmail) {
     return (
-      <div className="w-full flex justify-center opacity-70">
+      <div className="bg-[#6741f3] w-full flex justify-center pb-4">
         <div className="flex justify-between items-center py-4 px-5 w-11/12">
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold mr-2">Coursite</h1>
-            <p className="text-lg">Sell and Buy Courses</p>
+            <h1 className="text-2xl font-bold mr-2 text-white">Coursite</h1>
+            <p className="text-lg text-white">Sell and Buy Courses</p>
           </div>
           <div className="flex items-center space-x-4">
             <button
@@ -91,11 +91,11 @@ const Navbar = () => {
     );
   } else {
     return (
-      <div className="w-full flex justify-center opacity-70">
+      <div className="bg-[#6741f3] w-full flex justify-center ">
         <div className="flex justify-between items-center py-4 px-5 w-11/12">
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold mr-2">Coursite</h1>
-            <p className="text-lg">Sell and Buy Courses</p>
+            <h1 className="text-2xl font-bold mr-2 text-white">Coursite</h1>
+            <p className="text-lg text-white">Sell and Buy Courses</p>
           </div>
           <div className="flex items-center space-x-4">
             <button

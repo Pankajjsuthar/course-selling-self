@@ -20,6 +20,7 @@ connectDB();
 
 app.post("/user/login", async (req, res) => {
   const { emailId, password, isAdmin } = req.body;
+  
   if (isAdmin) {
     Admin.findOne({ emailId, password }).then((admin) => {
       if (admin) {
@@ -29,10 +30,10 @@ app.post("/user/login", async (req, res) => {
           { expiresIn: "1hr" }
         );
         const jwtCookie = cookie.serialize("jwt", token, {
-          httpOnly: true, // Prevent client-side access
-          maxAge: 60 * 60 * 1000, // Cookie expiration time in milliseconds (1 hour in this example)
-          secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-          path: "/", // Specify the path for which the cookie is valid
+          httpOnly: true,
+          maxAge: 60 * 60 * 1000,
+          secure: process.env.NODE_ENV === "production",
+          path: "/",
         });
 
         res
@@ -41,36 +42,42 @@ app.post("/user/login", async (req, res) => {
           .status(200)
           .json({ message: "Admin logged in successfully.", token });
       } else {
-        res.sendStatus(405).json({ message: "Admin didn't exist." });
+        res.status(405).json({ message: "Admin didn't exist." });
       }
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error." });
     });
   } else {
-    User.findOne({ emailId, password }).then((User) => {
-      if (User) {
+    User.findOne({ emailId, password }).then((user) => {
+      if (user) {
         const token = jwt.sign(
           { emailId: emailId, password: password },
           secretKey,
           { expiresIn: "1hr" }
         );
         const jwtCookie = cookie.serialize("jwt", token, {
-          httpOnly: true, // Prevent client-side access
-          maxAge: 60 * 60 * 1000, // Cookie expiration time in milliseconds (1 hour in this example)
-          secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-          path: "/", // Specify the path for which the cookie is valid
+          httpOnly: true,
+          maxAge: 60 * 60 * 1000,
+          secure: process.env.NODE_ENV === "production",
+          path: "/",
         });
 
-        // Set the cookie in the response
         res
           .setHeader("Set-Cookie", jwtCookie)
           .cookie("jwt-tok", token)
           .status(200)
           .json({ message: "User logged in successfully.", token });
       } else {
-        res.sendStatus(405).json({ message: "User didn't exist." });
+        res.status(405).json({ message: "User didn't exist." });
       }
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error." });
     });
   }
 });
+
 
 app.post("/user/signup", async (req, res) => {
   const { emailId, password, firstName, lastName, phoneNo } = req.body;

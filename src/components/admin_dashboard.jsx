@@ -16,11 +16,11 @@ const AdminDescription = (props) => {
 
 const AdminImage = (props) => {
   return (
-    <div className="w-1/3 mx-auto">
+    <div className="w-full mx-auto">
       <img
         src={props.imageLink}
         alt="Placeholder"
-        className="w-72 h-72 rounded-full m-8 mx-auto"
+        className="w-72 h-72 rounded-3xl m-8 mx-auto"
       />
     </div>
   );
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col md:flex-row mb-8">
-        <div className="md:w-1/3 mb-4 md:mb-0">
+        <div className="w-full md:w-1/3 mb-4 md:mb-0">
           <AdminImage
             imageLink={
               "https://images.pexels.com/photos/2105416/pexels-photo-2105416.jpeg?auto=compress&cs=tinysrgb&w=600"

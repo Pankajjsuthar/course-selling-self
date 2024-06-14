@@ -50,12 +50,12 @@ const CourseCardUser = (props) => {
         <div className="flex justify-between items-center">
           <div className="flex space-x-2">
             <button
-              className="px-4 py-2 rounded-md bg-[#F1D4E5] text-black hover:bg-[#FFF4E0] transition-colors duration-300"
+              className="px-4 py-2 rounded-md bg-[rgba(113,78,241,0.86)] text-white hover:bg-[#704EF1] transition-colors duration-300"
               onClick={props.onClick}
             >
               Add To Cart
             </button>
-            <button className="px-4 py-2 rounded-md bg-[#F1D4E5] text-black hover:bg-[#FFF4E0] transition-colors duration-300">
+            <button className="px-4 py-2 rounded-md bg-[rgba(113,78,241,0.86)] text-white hover:bg-[#704EF1] transition-colors duration-300">
               Buy Now
             </button>
           </div>
@@ -84,7 +84,7 @@ const UserLanding = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4 flex flex-col">
+    <div className="container mx-auto flex flex-col">
       <div className="h-[90vh]">
         <img
           src={userlandingimage}
